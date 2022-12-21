@@ -1,0 +1,8 @@
+.focus-input-prevent {
+  &,
+  &:focus {
+    outline: none !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+}
