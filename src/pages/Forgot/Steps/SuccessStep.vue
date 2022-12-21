@@ -16,7 +16,7 @@ const onClick = (): void => {
       class="w-full basis-2/4 grow shrink"
       @click="onClick"
     >
-      🎉 Sign In 🎉
+      {{ $t('successstep.signin') }}
     </Button>
   </div>
 </template>

@@ -2,9 +2,12 @@
 import {ref, computed, reactive} from 'vue'
 import {useVuelidate} from '@vuelidate/core'
 import {required, maxLength, minLength, numeric} from '@vuelidate/validators'
+import {useI18n} from 'vue-i18n'
 
 import * as Input from '@/components/UI/Input'
 import Button from '@/components/UI/Button'
+
+const {t} = useI18n()
 
 const emit = defineEmits(['next', 'back'])
 
@@ -26,7 +29,7 @@ const v$ = useVuelidate(rules, form)
 
 // Computed
 const getCodeTextError = computed(() => {
-  return v$.value.$errors.length ? 'Enter valid code' : ''
+  return v$.value.$errors.length ? t('codestep.error') : ''
 })
 
 // Methods
@@ -106,7 +109,7 @@ const onInput = (charAt: number): void => {
         :loading="loading"
         @click="onClick"
       >
-        Next
+        {{ $t('codestep.next') }}
       </Button>
 
       <Button
@@ -116,7 +119,7 @@ const onInput = (charAt: number): void => {
         :disabled="loading"
         @click="onBack"
       >
-        Go Back
+        {{ $t('codestep.back') }}
       </Button>
     </div>
   </div>

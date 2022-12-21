@@ -2,9 +2,12 @@
 import {ref, computed, reactive} from 'vue'
 import {useVuelidate} from '@vuelidate/core'
 import {required, email} from '@vuelidate/validators'
+import {useI18n} from 'vue-i18n'
 
 import * as Input from '@/components/UI/Input'
 import Button from '@/components/UI/Button'
+
+const {t} = useI18n()
 
 const emit = defineEmits(['next'])
 
@@ -21,9 +24,7 @@ const v$ = useVuelidate(rules, form)
 
 // Computed
 const getEmailErrorText = computed(() => {
-  return v$.value.email.$error
-    ? 'Email is invalid, example example@mail.ru'
-    : ''
+  return v$.value.email.$error ? t('emailstep.error') : ''
 })
 
 // Methods
@@ -64,7 +65,7 @@ const onClick = async (): Promise<void> => {
       :loading="loading"
       @click="onClick"
     >
-      Next
+      {{ $t('emailstep.next') }}
     </Button>
   </div>
 </template>

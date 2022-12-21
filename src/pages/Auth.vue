@@ -3,10 +3,13 @@ import {reactive, ref, computed} from 'vue'
 import {RouterLink} from 'vue-router'
 import {useVuelidate} from '@vuelidate/core'
 import {required, email, minLength} from '@vuelidate/validators'
+import {useI18n} from 'vue-i18n'
 
 import * as Input from '@/components/UI/Input'
 import WhiteBox from '@/components/Containers/WhiteBox'
 import Button from '@/components/UI/Button'
+
+const {t} = useI18n()
 
 const form = reactive({
   email: '',
@@ -36,13 +39,11 @@ const getPasswordInputType = computed(() => {
 })
 
 const getEmailErrorText = computed(() => {
-  return v$.value.email.$error
-    ? 'Email is invalid, example example@mail.ru'
-    : ''
+  return v$.value.email.$error ? t('auth.errors.email') : ''
 })
 
 const getPasswordErrorText = computed(() => {
-  return v$.value.password.$error ? 'Password is required' : ''
+  return v$.value.password.$error ? t('auth.errors.password') : ''
 })
 
 const onSubmit = async () => {
@@ -68,23 +69,21 @@ const onSubmit = async () => {
       alt="DonatePlus"
     />
 
-    <h2 class="heading-2 mt-6">Sign in to your account</h2>
+    <h2 class="heading-2 mt-6">{{ $t('auth.greeting') }}</h2>
 
     <p class="mt-2 text-center text-sm text-gray-600">
-      Or
+      {{ $t('auth.or') }}
 
       <RouterLink
         to="/signup"
         tag="a"
         class="font-medium text-indigo-600 hover:text-indigo-500"
       >
-        start your 14-day free trial
+        {{ $t('auth.trial') }}
       </RouterLink>
     </p>
 
-    <WhiteBox
-      class="max-w-full min-w-[446px] flex flex-col items-stretch px-10 pt-9 pb-10 mt-8 box-border"
-    >
+    <WhiteBox class="max-w-full min-w-[446px] flex flex-col items-stretch px-10 pt-9 pb-10 mt-8 box-border">
       <Input.Text
         v-model="form.email"
         class="mb-2"
@@ -102,7 +101,7 @@ const onSubmit = async () => {
       <Input.Text
         v-model="form.password"
         class="mb-4"
-        label="Password"
+        :label="$t('auth.form.password')"
         name="password"
         required
         :type="getPasswordInputType"
@@ -122,7 +121,7 @@ const onSubmit = async () => {
       </Input.Text>
 
       <div class="flex items-center justify-between mb-4">
-        <Input.Checkbox v-model="form.remember"> Remember me! </Input.Checkbox>
+        <Input.Checkbox v-model="form.remember">{{ $t('auth.form.remember') }}</Input.Checkbox>
 
         <div class="text-sm">
           <RouterLink
@@ -130,7 +129,7 @@ const onSubmit = async () => {
             tag="a"
             class="font-medium text-indigo-600 hover:text-indigo-500"
           >
-            Forgot your password?
+            {{ $t('auth.form.forgot') }}
           </RouterLink>
         </div>
       </div>
@@ -141,7 +140,7 @@ const onSubmit = async () => {
         :loading="loading"
         @click="onSubmit"
       >
-        Submit
+        {{ $t('auth.form.submit') }}
       </Button>
     </WhiteBox>
   </div>

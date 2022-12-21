@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import {ref, computed, reactive} from 'vue'
 import {useVuelidate} from '@vuelidate/core'
-import {required, email, minLength} from '@vuelidate/validators'
+import {required, minLength} from '@vuelidate/validators'
+import {useI18n} from 'vue-i18n'
 
 import * as Input from '@/components/UI/Input'
 import Button from '@/components/UI/Button'
+
+const {t} = useI18n()
 
 const emit = defineEmits(['next', 'back'])
 
@@ -21,9 +24,7 @@ const v$ = useVuelidate(rules, form)
 
 // Computed
 const getPasswordErrorText = computed(() => {
-  return v$.value.password.$error
-    ? 'New password musst be a more than 8-digits'
-    : ''
+  return v$.value.password.$error ? t('newpasswordstep.error') : ''
 })
 
 // Methods
@@ -51,7 +52,7 @@ const onBack = (): void => {
     <Input.Text
       v-model="form.password"
       class="mb-2"
-      label="New Password"
+      :label="$t('newpasswordstep.new')"
       name="password"
       type="password"
       required
@@ -69,7 +70,7 @@ const onBack = (): void => {
         :loading="loading"
         @click="onClick"
       >
-        Next
+        {{ $t('newpasswordstep.next') }}
       </Button>
 
       <Button
@@ -79,7 +80,7 @@ const onBack = (): void => {
         :disabled="loading"
         @click="onBack"
       >
-        Go Back
+        {{ $t('newpasswordstep.back') }}
       </Button>
     </div>
   </div>

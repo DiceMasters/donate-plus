@@ -2,17 +2,14 @@
 import {reactive, ref, computed} from 'vue'
 import {RouterLink} from 'vue-router'
 import {useVuelidate} from '@vuelidate/core'
-import {
-  required,
-  email,
-  minLength,
-  maxLength,
-  sameAs
-} from '@vuelidate/validators'
+import {required, email, minLength, maxLength, sameAs} from '@vuelidate/validators'
+import {useI18n} from 'vue-i18n'
 
 import * as Input from '@/components/UI/Input'
 import WhiteBox from '@/components/Containers/WhiteBox'
 import Button from '@/components/UI/Button'
+
+const {t} = useI18n()
 
 const form = reactive({
   email: '',
@@ -52,27 +49,23 @@ const getPasswordInputType = computed(() => {
 
 // Validate:: Errors
 const getEmailErrorText = computed(() => {
-  return v$.value.email.$error
-    ? 'Email is invalid, example example@mail.ru'
-    : ''
+  return v$.value.email.$error ? t('signup.errors.email') : ''
 })
 
 const getUsernameErrorText = computed(() => {
-  return v$.value.username.$error
-    ? 'Username must be at least 3 and no more than 24 characters'
-    : ''
+  return v$.value.username.$error ? t('signup.errors.login') : ''
 })
 
 const getPasswordErrorText = computed(() => {
-  return v$.value.password.$error ? 'Password is required' : ''
+  return v$.value.password.$error ? t('signup.errors.password') : ''
 })
 
 const getPasswordRepeatErrorText = computed(() => {
-  return v$.value.repeatPassword.$error ? 'Password is must be a same' : ''
+  return v$.value.repeatPassword.$error ? t('signup.errors.repeat') : ''
 })
 
 const getAgreeErrorText = computed(() => {
-  return v$.value.agree.$error ? 'Accept the terms of service' : ''
+  return v$.value.agree.$error ? t('signup.errors.agree') : ''
 })
 
 // Methods
@@ -99,15 +92,13 @@ const onSubmit = async () => {
       alt="DonatePlus"
     />
 
-    <h2 class="heading-2 mt-6">Sign Up</h2>
+    <h2 class="heading-2 mt-6">{{ $t('signup.title') }}</h2>
 
     <p class="mt-2 text-center text-sm text-gray-600">
-      Start using the service with a 14-day free trial
+      {{ $t('signup.trial') }}
     </p>
 
-    <WhiteBox
-      class="max-w-full min-w-[446px] flex flex-col items-stretch px-10 pt-9 pb-10 mt-8 box-border"
-    >
+    <WhiteBox class="max-w-full min-w-[446px] flex flex-col items-stretch px-10 pt-9 pb-10 mt-8 box-border">
       <Input.Text
         v-model="form.email"
         class="mb-2"
@@ -125,7 +116,7 @@ const onSubmit = async () => {
       <Input.Text
         v-model="form.username"
         class="mb-2"
-        label="Login"
+        :label="$t('signup.form.login')"
         name="login"
         required
         :error="getUsernameErrorText"
@@ -138,7 +129,7 @@ const onSubmit = async () => {
       <Input.Text
         v-model="form.password"
         class="mb-4"
-        label="Password"
+        :label="$t('signup.form.password')"
         name="password"
         required
         :type="getPasswordInputType"
@@ -160,7 +151,7 @@ const onSubmit = async () => {
       <Input.Text
         v-model="form.repeatPassword"
         class="mb-4"
-        label="Repeat Password"
+        :label="$t('signup.repeat')"
         name="repeat-password"
         required
         :type="getPasswordInputType"
@@ -184,13 +175,13 @@ const onSubmit = async () => {
         class="mb-4"
         :error="getAgreeErrorText"
       >
-        I agree to the
+        {{ $t('signup.form.agree') }}
         <RouterLink
           to="/terms"
           tag="a"
           class="text-indigo-600 hover:text-indigo-500"
         >
-          terms of service
+          {{ $t('signup.form.term') }}
         </RouterLink>
       </Input.Checkbox>
 
@@ -201,7 +192,7 @@ const onSubmit = async () => {
         loading-spiner
         @click="onSubmit"
       >
-        Submit
+        {{ $t('signup.form.submit') }}
       </Button>
     </WhiteBox>
   </div>
